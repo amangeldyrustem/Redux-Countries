@@ -1,11 +1,20 @@
-import ReactDOM from "react-dom";
-import { cofigureStore } from "./store";
-import {Root} from "./Root";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 
-const store = cofigureStore();
+import './index.css';
+import App from './App';
 
-const rootElement = document.getElementById("root");
+import { store } from './store'
+import { Provider } from 'react-redux';
+
 ReactDOM.render(
-  <Root store={store} />,
-  rootElement
+  <React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById('root')
 );

@@ -1,23 +1,18 @@
-import { createStore } from "redux";
+import axios from "axios";
+import { createStore, compose, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { rootReducer } from "./rootReducer";
+import * as api from "../config"
 
-import {rootReducer} from './root-reducer';
-import {loadState, saveState} from './local-storage';
-import throttle from 'lodash/throttle';
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export const cofigureStore = () => {
-  const persistedState = loadState();
+const store = createStore(rootReducer, composeEnhancers(
+    applyMiddleware(
+        thunk.withExtraArgument({
+            client: axios,
+            api,
+        })
+    )
+))
 
-  const store = createStore(
-    rootReducer,
-    persistedState,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  );
-
-  store.subscribe(throttle(() => {
-    saveState({
-      todos: store.getState().todos,
-    });
-  }, 1000));
-
-  return store;
-}
+export {store};

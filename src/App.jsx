@@ -1,18 +1,27 @@
-import { NewTodo } from './components/NewTodo'
-import { TodoList } from './components/TodoList'
-import { Filters } from './components/Filters';
+import { Routes, Route } from 'react-router-dom';
 
-import "./index.css";
+import { Header } from './components/Header';
+import { Main } from './components/Main';
 
-export default function App() {
+import { HomePage } from './pages/HomePage';
+import { Details } from './pages/Details';
+import { NotFound } from './pages/NotFound';
+
+function App() {
   return (
-    <div className='wrap'>
-      <h1>Redux Todo App</h1>
-      <div className="ui container">
-        <NewTodo />
-        <Filters />
-        <TodoList />
-      </div>
-    </div >
+    <>
+      <Header />
+      <Main>
+        <Routes>
+          <Route exact path="/" element={
+            <HomePage />
+          } />
+          <Route path="/country/:name" element={<Details />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Main>
+    </>
   );
 }
+
+export default App;
